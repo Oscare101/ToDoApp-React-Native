@@ -18,7 +18,7 @@ export default function Item(props) {
 const styles = StyleSheet.create({
   list: {
     padding: 10,
-    backgroundColor: '#eee',
+    backgroundColor: '#a6e3ff',
     borderRadius: 5,
     marginVertical: 5,
   },

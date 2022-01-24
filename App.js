@@ -35,6 +35,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}> Your ToDo App</Text>
       <Button title="Add new Goal" onPress={() => setIsAddMode(true)} />
       <Input
         visible={isAddMode}
@@ -59,6 +60,16 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 70,
     padding: 50,
+    backgroundColor: '#d9f1fc',
+    flex: 1,
+  },
+  header: {
+    color: '#888',
+    letterSpacing: 2,
+    fontSize: 30,
+    fontWeight: 'bold',
+    alignSelf: 'center',
   },
 })

@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#d9f1fc',
   },
   input: {
     borderBottomColor: '#000',
