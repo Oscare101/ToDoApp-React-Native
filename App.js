@@ -1,14 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-  FlatList,
-} from 'react-native'
+import { Button, StyleSheet, Text, View, FlatList } from 'react-native'
+
 import Input from './components/input'
 import Item from './components/item'
 
@@ -16,11 +9,15 @@ export default function App() {
   const [goals, setGoals] = useState([])
   const [isAddMode, setIsAddMode] = useState(false)
 
-  function Handler(goalTitle) {
+  function Handler(goalTitle, goalColor) {
+    if (goalTitle.trim().length === 0) {
+      return // you can't add empty goal or a goal only with spaces
+    }
     setGoals((current) => [
       ...current,
-      { id: Math.random().toString(), value: goalTitle },
+      { id: Math.random().toString(), value: goalTitle, color: goalColor },
     ])
+
     setIsAddMode(false)
   }
   function removeGoal(goalId) {
@@ -30,13 +27,18 @@ export default function App() {
   }
 
   function cancelGoalAddition() {
-    setIsAddMode(false)
+    setIsAddMode(false) // goal input window
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}> Your ToDo App</Text>
-      <Button title="Add new Goal" onPress={() => setIsAddMode(true)} />
+      <Button
+        title="Add new Goal"
+        onPress={() => {
+          setIsAddMode(true)
+        }}
+      />
       <Input
         visible={isAddMode}
         onAddGoal={Handler}
@@ -49,6 +51,7 @@ export default function App() {
             id={itemData.item.id}
             onDelete={removeGoal}
             title={itemData.item.value}
+            color={itemData.item.color}
           />
         )}
       />
