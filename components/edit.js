@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import {
   View,
   Text,
@@ -9,14 +10,21 @@ import {
   TouchableOpacity,
 } from 'react-native'
 
-export default function Input(props) {
+export default function Edit(props) {
   const [enteredGoal, setEnteredGoal] = useState('')
   const [goalColor, setGoalColor] = useState('#00000000')
   const [colorModal, setColorModal] = useState(false)
   const [description, setDescription] = useState('')
 
+  useEffect(() => {
+    setEnteredGoal(props.title)
+
+    setGoalColor(props.color)
+    setDescription(props.description)
+  }, [props.id + props.title + props.description + props.color])
+
   return (
-    <Modal visible={props.visible} animationType="slide">
+    <Modal visible={props.visible} transparent={true} animationType="slide">
       <Modal visible={colorModal} transparent={true} animationType="slide">
         <View
           style={{
@@ -148,68 +156,89 @@ export default function Input(props) {
           </TouchableOpacity>
         </View>
       </Modal>
-
-      <View style={styles.inputView}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View
           style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
+            backgroundColor: '#fff',
+            borderRadius: 20,
+            height: '50%',
+            width: '60%',
+            alignSelf: 'center',
             justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <View
             style={{
-              width: 7,
-              height: 36,
-              backgroundColor: goalColor,
-              borderRadius: 100,
+              flexDirection: 'row',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
-          ></View>
-          <TextInput
-            placeholder="Add your goal"
-            style={styles.input}
-            onChangeText={(text) => setEnteredGoal(text)}
-            value={enteredGoal}
-          />
-        </View>
-
-        <TextInput
-          placeholder="Description"
-          multiline={true}
-          style={styles.inputDescription}
-          onChangeText={(text) => setDescription(text)}
-          value={description}
-        />
-
-        <View style={{ marginBottom: 10, width: '80%' }}>
-          <Button
-            title="color"
-            color="#0dd155"
-            onPress={() => setColorModal(true)}
-          />
-        </View>
-
-        <View style={styles.buttons}>
-          <View style={{ width: '40%' }}>
-            <Button
-              title="cancel"
-              color="red"
-              onPress={() => props.onCancel()}
+          >
+            <View
+              style={{
+                width: 7,
+                height: 36,
+                backgroundColor: goalColor,
+                borderRadius: 100,
+              }}
+            ></View>
+            <TextInput
+              placeholder="Add your goal"
+              style={styles.input}
+              onChangeText={(text) => setEnteredGoal(text)}
+              value={enteredGoal}
             />
           </View>
-          <View style={{ width: '40%' }}>
+
+          <TextInput
+            placeholder="Description"
+            multiline={true}
+            style={styles.inputDescription}
+            onChangeText={(text) => setDescription(text)}
+            value={description}
+          />
+          <View style={{ marginBottom: 10, width: '80%' }}>
             <Button
-              title="Add"
-              onPress={() => {
-                if (enteredGoal.trim().length > 0) {
-                  props.onAddGoal(enteredGoal, description, goalColor)
-                  setEnteredGoal('')
-                  setDescription('')
-                  setGoalColor('#00000000')
-                }
-              }}
+              title="color"
+              color="#0dd155"
+              onPress={() => setColorModal(true)}
             />
+          </View>
+          <View style={styles.buttons}>
+            <View style={{ width: '40%' }}>
+              <Button
+                title="cancel"
+                color="red"
+                onPress={() => props.onEditModal()}
+              />
+            </View>
+            <View style={{ width: '40%' }}>
+              <Button
+                title="Edit"
+                onPress={() => {
+                  if (enteredGoal.trim().length > 0) {
+                    if (
+                      enteredGoal == props.title &&
+                      description == props.description &&
+                      goalColor == props.color
+                    ) {
+                    } else {
+                      props.afterEdit(
+                        enteredGoal,
+                        description,
+                        goalColor,
+                        props.id
+                      )
+                      setEnteredGoal('')
+                      setDescription('')
+                      setGoalColor('#00000000')
+                    }
+                  }
+                }}
+              />
+            </View>
           </View>
         </View>
       </View>
